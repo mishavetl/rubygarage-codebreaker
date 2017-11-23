@@ -187,5 +187,82 @@ module Codebreaker
         expect(data).to eq('+-')
       end
     end
+
+    describe '#find' do
+      before do
+        game.instance_variable_set('@length', 4)
+        game.instance_variable_set('@matched', Array.new(4) { false })
+      end
+
+      it 'finds basic digits' do
+        game.instance_variable_set('@code', '1234')
+        data = game.find('1')
+        expect(data).to be_truthy
+      end
+
+      it 'finds basic digits' do
+        game.instance_variable_set('@code', '1234')
+        data = game.find('2')
+        expect(data).to be_truthy
+      end
+
+      it 'finds basic digits' do
+        game.instance_variable_set('@code', '1234')
+        data = game.find('5')
+        expect(data).to be_falsey
+      end
+
+      it 'finds basic digits continually' do
+        game.instance_variable_set('@code', '1234')
+        game.find('1')
+        game.find('2')
+        game.find('4')
+        data = game.find('3')
+        expect(data).to be_truthy
+      end
+
+      it 'finds duplicate digits' do
+        game.instance_variable_set('@code', '2234')
+        game.find('1')
+        game.find('2')
+        game.find('4')
+        data = game.find('2')
+        expect(data).to be_truthy
+      end
+
+      it 'finds duplicate digits' do
+        game.instance_variable_set('@code', '1234')
+        game.find('2')
+        data = game.find('2')
+        expect(data).to be_falsey
+      end
+
+      it 'finds duplicate digits' do
+        game.instance_variable_set('@code', '1222')
+        game.find('2')
+        game.find('2')
+        game.find('2')
+        data = game.find('2')
+        expect(data).to be_falsey
+      end
+
+      it 'finds duplicate digits' do
+        game.instance_variable_set('@code', '2222')
+        game.find('2')
+        game.find('2')
+        game.find('2')
+        data = game.find('2')
+        expect(data).to be_truthy
+      end
+
+      it 'finds duplicate digits' do
+        game.instance_variable_set('@code', '2221')
+        game.find('2')
+        game.find('2')
+        game.find('2')
+        data = game.find('1')
+        expect(data).to be_truthy
+      end
+    end
   end
 end

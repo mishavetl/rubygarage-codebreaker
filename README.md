@@ -32,6 +32,7 @@ $ bin/codebreaker
 ```
 -> guess 1234
 --
+-> exit
 ```
 
 ### Available functions

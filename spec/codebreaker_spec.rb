@@ -18,7 +18,7 @@ module Codebreaker
     describe '#generate' do
       it 'generates values' do
         120.times do
-          data = game.generate
+          data = game.generate 4
           expect(data).to match(/[1-6]{4}/)
         end
       end
@@ -124,6 +124,66 @@ module Codebreaker
       it 'guesses a number with 2 third-party digits and 1 digit on wrong place' do
         game.instance_variable_set('@code', '1134')
         data = game.guess '1561'
+        expect(data).to eq('+-')
+      end
+
+      it 'guesses a number with duplicate digits' do
+        game.instance_variable_set('@code', '3553')
+        data = game.guess '5353'
+        expect(data).to eq('--++')
+      end
+
+      it 'guesses a number with duplicate digits' do
+        game.instance_variable_set('@code', '5555')
+        data = game.guess '5555'
+        expect(data).to eq('++++')
+      end
+
+      it 'guesses a number with duplicate digits' do
+        game.instance_variable_set('@code', '1233')
+        data = game.guess '2133'
+        expect(data).to eq('--++')
+      end
+      
+      it 'guesses a number with duplicate digits' do
+        game.instance_variable_set('@code', '2233')
+        data = game.guess '0211'
+        expect(data).to eq('+')
+      end
+
+      it 'guesses a number with duplicate digits' do
+        game.instance_variable_set('@code', '1113')
+        data = game.guess '3111'
+        expect(data).to eq('-++-')
+      end
+
+      it 'guesses a number with duplicate digits' do
+        game.instance_variable_set('@code', '1221')
+        data = game.guess '2112'
+        expect(data).to eq('----')
+      end
+
+      it 'guesses a number with duplicate digits' do
+        game.instance_variable_set('@code', '1525')
+        data = game.guess '2515'
+        expect(data).to eq('-+-+')
+      end
+
+      it 'guesses a number with duplicate digits with duplicates in input' do
+        game.instance_variable_set('@code', '2211')
+        data = game.guess '2221'
+        expect(data).to eq('+++')
+      end
+
+      it 'guesses a number with duplicate digits with duplicates in input' do
+        game.instance_variable_set('@code', '2211')
+        data = game.guess '2222'
+        expect(data).to eq('++')
+      end
+
+      it 'guesses a number with duplicate digits with duplicates in input' do
+        game.instance_variable_set('@code', '3211')
+        data = game.guess '3322'
         expect(data).to eq('+-')
       end
     end

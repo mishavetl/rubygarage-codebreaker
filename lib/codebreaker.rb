@@ -4,14 +4,15 @@ module Codebreaker
   class Game
     attr_reader :turns, :code
 
-    def start(turns)
+    def start(turns, length = 4)
       @turns = turns
-      @code = generate
+      @length = length
+      @code = generate @length
       @hints = 0
     end
 
-    def generate
-      Array.new(4) { rand(1..6).to_s }.join
+    def generate(length)
+      Array.new(length) { rand(1..6).to_s }.join
     end
 
     def guess code
@@ -22,12 +23,24 @@ module Codebreaker
       match_code code
     end
 
+    def find(digit)
+      code.each_char.with_index do |d, i|
+        if d == digit && !@matched[i]
+          @matched[i] = true
+          return true
+        end
+      end
+      return false
+    end
+
     def match_code code
       result = ''
+      @matched = Array.new(@length) { false }
       code.each_char.with_index do |d, i|
-        if @code.index(d) == i
+        if @code[i] == d
+          @matched[i] = true
           result += '+'
-        elsif @code.index(d)
+        elsif find(d)
           result += '-'
         end
       end
@@ -50,18 +63,11 @@ module Codebreaker
       game = Game.new
       game.start turns
 
-      input = ''
-
       while true
+        print '-> '
         input = gets.split
-        if game.turns == 0
-          puts 'You lost. You need to start a new game. You can reveal the code or set a new amount of turns'
-        elsif input[0] == 'exit'
+        if input[0] == 'exit'
           break
-        elsif input[0] == 'guess'
-          puts game.guess(input[1])
-        elsif input[0] == 'hint'
-          puts game.hint
         elsif input[0] == 'reveal'
           puts game.code
         elsif input[0] == 'turns'
@@ -69,7 +75,21 @@ module Codebreaker
             turns = Integer(input[1])
           rescue ArgumentError
             puts 'Bad number format'
+          rescue TypeError
+            puts 'An argument needed'
           end
+        elsif input[0] == 'restart'
+          game.start turns
+        elsif game.turns == 0
+          puts 'You lost. You need to start a new game. You can reveal the code or set a new amount of turns'
+        elsif input[0] == 'guess'
+          if input[1].nil?
+            puts 'An argument needed'
+          else
+            puts game.guess(input[1])
+          end
+        elsif input[0] == 'hint'
+          puts game.hint
         else
           puts "I don't understand you"
         end

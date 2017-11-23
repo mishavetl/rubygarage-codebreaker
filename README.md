@@ -22,7 +22,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Run
+
+```bash
+$ bin/codebreaker
+```
+
+### Use
+```
+-> guess 1234
+--
+```
+
+### Available functions
+
+* guess `code`
+* restart
+* exit
+* hint
+* reveal
+* turns `turns`
 
 ## Development
 

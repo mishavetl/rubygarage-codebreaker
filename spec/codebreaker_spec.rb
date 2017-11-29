@@ -186,6 +186,24 @@ module Codebreaker
         data = game.guess '3322'
         expect(data).to eq('+-')
       end
+
+      it 'guesses a number without duplicate digits with duplicates in input' do
+        game.instance_variable_set('@code', '4221')
+        data = game.guess '1111'
+        expect(data).to eq('+')
+      end
+
+      it 'guesses a number without duplicate digits with duplicates in input' do
+        game.instance_variable_set('@code', '1221')
+        data = game.guess '1111'
+        expect(data).to eq('++')
+      end
+
+      it 'guesses a number without duplicate digits with duplicates in input' do
+        game.instance_variable_set('@code', '4221')
+        data = game.guess '2222'
+        expect(data).to eq('++')
+      end
     end
 
     describe '#find' do

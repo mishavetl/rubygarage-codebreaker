@@ -34,17 +34,23 @@ module Codebreaker
     end
 
     def match_code code
-      result = ''
+      result = ' ' * @length
       @matched = Array.new(@length) { false }
       code.each_char.with_index do |d, i|
         if @code[i] == d
           @matched[i] = true
-          result += '+'
-        elsif find(d)
-          result += '-'
+          result[i] = '+'
+        else
         end
       end
-      result
+      code.each_char.with_index do |d, i|
+        if result[i] != ' '
+          #
+        elsif find(d)
+          result[i] = '-'
+        end
+      end
+      result.split(' ').join
     end
 
     def hint
